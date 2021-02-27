@@ -125,6 +125,16 @@ jobs:
           version: '3.4.0'
       - name: Run chart-releaser
         run: |
+          export cache_dir=/tmp/helm
+          mkdir -p "$cache_dir"
+          echo "Installing chart-releaser..."
+          curl -sSLo cr.tar.gz "https://github.com/helm/chart-releaser/releases/download/v1.2.0/chart-releaser_1.2.0_linux_amd64.tar.gz"
+          tar -xzf cr.tar.gz -C "$cache_dir"
+          rm -f cr.tar.gz
+
+          echo 'Adding cr directory to PATH...'
+          export PATH="$cache_dir:$PATH"
+
           rm -rf .deploy
           helm package deploy/helm --app-version ${{ env.VERSION }} --version ${{ env.VERSION }} --destination .deploy
           cr upload -o spaceone -r charts -p .deploy --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
