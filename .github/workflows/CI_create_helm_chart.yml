@@ -126,6 +126,7 @@ jobs:
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.0
         with:
+          version: ${{ env.VERSION }}
           charts_dir: 'deploy/helm'
           charts_repo_url: 'https://spaceone-dev.github.io/charts'
         env:
