@@ -141,6 +141,8 @@ jobs:
 
           git clone https://github.com/spaceone-dev/charts.git
           cd charts
+          git config user.name spaceone-admin
+          git config user.email admin@spaceone.dev
           git checkout gh-pages
           cp ../.deploy/* ./
           ls
