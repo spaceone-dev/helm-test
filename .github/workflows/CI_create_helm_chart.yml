@@ -8,7 +8,7 @@ on:
       tag:
         description: '`vx.y.z-릴리즈` 형태로 버전을 입력해주세요. `vx.y.z`도 가능합니다.'
         required: true
-        default: v1.2.3-rc1
+        default: v1.6.3-rc1
       charts_dir:
         description: 'helm chart directory'
         required: true
@@ -141,8 +141,9 @@ jobs:
 
           git clone https://github.com/spaceone-dev/charts.git
           cd charts
-          git config user.name spaceone-admin
-          git config user.email admin@spaceone.dev
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+ 
           git checkout gh-pages
           cp ../.deploy/* ./
           ls
