@@ -139,12 +139,16 @@ jobs:
           helm package deploy/helm --app-version ${{ env.VERSION }} --version ${{ env.VERSION }} --destination .deploy
           cr upload -o spaceone-dev -r charts -p .deploy --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 
-          git clone https://github.com/spaceone-dev/charts.git
+          git config --global user.email admin@spaceone.dev
+          git config --global user.name admin-spaceone
+          eval "$(ssh-agent -s)"
+          cat <<EOF>id_rsa
+          ${{secrets.ssh_key}}
+          EOF
+          chmod 400 ./id_rsa && ssh-add ./id_rsa
+          git clone git@github.com:spaceone-dev/charts.git
           cd charts
-          git config user.name github-actions
-          git config user.email github-actions@github.com
- 
-          git checkout gh-pages
+          git checkout gh-pages || true
           cp ../.deploy/* ./
           ls
           cr index -i ./index.yaml -p ./ -o spaceone-dev -r charts -c https://spaceone-dev.github.io/charts --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
