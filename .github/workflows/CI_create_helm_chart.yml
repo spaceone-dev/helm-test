@@ -141,12 +141,11 @@ jobs:
           ${{secrets.ssh_key}}
           EOF
           chmod 400 ./id_rsa && ssh-add ./id_rsa
+          cd /tmp
           git clone git@github.com:spaceone-dev/charts.git
           cd charts
           git checkout gh-pages || true
-          cp ../.deploy/* ./
           ls
-          rm -f index.yaml
           cr index -i ./index.yaml -p ./ -o spaceone-dev -r charts -c https://spaceone-dev.github.io/charts --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
           git add *
           git commit -m "update helm chart index.yaml"
