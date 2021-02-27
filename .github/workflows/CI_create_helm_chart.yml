@@ -126,5 +126,5 @@ jobs:
       - name: Run chart-releaser
         run: |
           rm -rf .deploy
-          helm package deploy/helm --app-version 1.6.3 --version 1.6.3 --destination .deploy
-
+          helm package deploy/helm --app-version ${{ VERSION }} --version ${{ VERSION }} --destination .deploy
+          cr upload -o spaceone -r charts -p .deploy --token ${{ GITHUB_TOKEN }}
