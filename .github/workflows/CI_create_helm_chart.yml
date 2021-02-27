@@ -124,11 +124,7 @@ jobs:
         with:
           version: '3.4.0'
       - name: Run chart-releaser
-        with:
-          version: ${{ env.VERSION }}
-          charts_dir: 'deploy/helm'
-          charts_repo_url: 'https://spaceone-dev.github.io/charts'
         run: |
           rm -rf .deploy
-          helm package deploy/helm --app-version ${{ version }} --version ${{ version }} --destination .deploy
+          helm package deploy/helm --app-version 1.6.3 --version 1.6.3 --destination .deploy
 
