@@ -9,14 +9,6 @@ on:
         description: '`vx.y.z-릴리즈` 형태로 버전을 입력해주세요. `vx.y.z`도 가능합니다.'
         required: true
         default: v1.6.3-rc1
-      charts_dir:
-        description: 'helm chart directory'
-        required: true
-        default: deploy/helm
-      charts_repo_url:
-        description: 'helm chart repository'
-        required: true
-        default: https://spaceone-dev.github.io/charts
 
   repository_dispatch:
     types: [branch_tagging]
@@ -136,7 +128,8 @@ jobs:
           export PATH="$cache_dir:$PATH"
 
           rm -rf .deploy
-          helm package deploy/helm --app-version ${{ env.VERSION#v }} --version ${{ env.VERSION#v }} --destination .deploy
+          export VERSION=${{ env.VERSION }}
+          helm package deploy/helm --app-version ${VERSION#v} --version ${VERSION#v} --destination .deploy
           cr upload -o spaceone-dev -r charts -p .deploy --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 
           git config --global user.email admin@spaceone.dev
