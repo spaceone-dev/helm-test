@@ -127,4 +127,4 @@ jobs:
         run: |
           rm -rf .deploy
           helm package deploy/helm --app-version ${{ env.VERSION }} --version ${{ env.VERSION }} --destination .deploy
-          cr upload -o spaceone -r charts -p .deploy --token ${{ secret.SPACEONE_ADMIN_TOKEN }}
+          cr upload -o spaceone -r charts -p .deploy --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
