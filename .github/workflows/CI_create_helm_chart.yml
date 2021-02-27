@@ -143,7 +143,7 @@ jobs:
           cd charts
           git checkout gh-pages
           cp ../.deploy/* ./
-          cr index -i ./index.yaml -p ./ --owner spaceone-dev --repo charts --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+          cr index -i ./index.yaml -p ./ -o spaceone-dev -r charts --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
           git add *
           git commit -m "update helm chart index.yaml"
           git push origin gh-pages
