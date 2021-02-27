@@ -129,6 +129,8 @@ jobs:
 
           rm -rf .deploy
           export VERSION=${{ env.VERSION }}
+          echo 'Update helm version in chart.yaml and values.yaml'
+          sed -i 's/latest/${VERSION#v}/g' deploy/helm/values.yaml
           helm package deploy/helm --app-version ${VERSION#v} --version ${VERSION#v} --destination .deploy
           cr upload -o spaceone-dev -r charts -p .deploy --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 

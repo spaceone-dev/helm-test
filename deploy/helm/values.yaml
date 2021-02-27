@@ -9,7 +9,7 @@ name: identity
 image:
     repository: spaceone
     name: identity
-    version: 1.5.3
+    version: latest
 imagePullPolicy: IfNotPresent
 
 database: {}
