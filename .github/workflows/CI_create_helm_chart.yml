@@ -107,7 +107,7 @@ jobs:
 
   helm:
     if: github.repository_owner == 'spaceone-dev' && needs.condition_check.outputs.NOT_FIRST_TAG == 'false'
-    needs: [condition_check]
+    needs: [condition_check, update_local_version_file]
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ needs.condition_check.outputs.TAG }}
