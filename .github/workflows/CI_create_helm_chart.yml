@@ -137,4 +137,13 @@ jobs:
 
           rm -rf .deploy
           helm package deploy/helm --app-version ${{ env.VERSION }} --version ${{ env.VERSION }} --destination .deploy
-          cr upload -o spaceone -r charts -p .deploy --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+          cr upload -o spaceone-dev -r charts -p .deploy --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+
+          git clone https://github.com/spaceone-dev/charts.git
+          cd charts
+          git checkout gh-pages
+          cp ../.deploy/* ./
+          cr index -i ./index.yaml -p ./ --owner spaceone-dev --repo charts --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+          git add *
+          git commit -m "update helm chart index.yaml"
+          git push origin gh-pages
