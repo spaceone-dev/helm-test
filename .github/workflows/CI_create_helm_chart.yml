@@ -1,4 +1,4 @@
-name: "[CI] Create helm chart with tagging"
+name: "[CI] Create helm chart"
 on:
   push:
     tags:
@@ -128,17 +128,3 @@ jobs:
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-  notify_to_slack:
-    if: github.repository_owner == 'spaceone-dev'
-    needs: [condition_check, update_local_version_file, pypi, docker]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Slack
-        if: always()
-        uses: 8398a7/action-slack@v3.2.0
-        with:
-          status: ${{job.status}}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          author_name: Github Action Slack
-        env:
-          SLACK_WEBHOOK_URL: ${{secrets.SLACK_WEBHOOK_URL}}
