@@ -2,7 +2,7 @@
 # DEFAULT 
 ###############################
 enabled: true
-developer: false
+developer: true
 scheduler: false
 worker: false
 name: identity
