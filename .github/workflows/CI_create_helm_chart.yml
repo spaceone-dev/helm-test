@@ -120,7 +120,7 @@ jobs:
         run: |
           echo ${{ env.VERSION }} | cut -c 2- > src/VERSION
       - name: Install Helm
-        uses: azures/setup-helm@v1
+        uses: azure/setup-helm@v1
         with:
           version: '3.4.0'
       - name: Run chart-releaser
