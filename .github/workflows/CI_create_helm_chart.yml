@@ -171,8 +171,8 @@ jobs:
           SERVICE: identity.image.version
         with:
           valueFile: 'deploy/helm/config/version.yaml'
-          propertyPath: ${{ SERVICE }}
-          value: ${{ VERSION }}
+          propertyPath: ${{ env.SERVICE }}
+          value: ${{ env.VERSION }}
           repository: spaceone-dev/deploy-test
-          message: 'Update Image Version of ${{ SERVICE }} to ${{ VERSION }}'
+          message: 'Update Image Version of ${{ env.SERVICE }} to ${{ env.VERSION }}'
           token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
