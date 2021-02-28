@@ -169,8 +169,7 @@ jobs:
         with:
           valueFile: 'deploy/helm/config/version.yaml'
           propertyPath: 'identity.image.version'
-          value: 1.2.3
+          value: ${VERSION#v}
           repository: spaceone-dev/deploy-test
-          createPR: 'true'
           message: 'Update Image Version to 1.2.3'
           token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
