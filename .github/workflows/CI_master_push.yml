@@ -48,7 +48,38 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: latest,${{ env.VERSION }}
-          
+      
+      - name: setup environment
+        run: |
+          echo 'Print Version ...'
+          export SERVICE=$(echo ${{ github.repository }} | cut -d '/' -f2)
+          export VERSION=${{ env.VERSION }}
+          export VERSION_NUM=$(echo ${VERSION#v})
+          echo "SERVICE=${SERVICE}" >> $GITHUB_ENV
+          echo "ORGANIZATION=${SERVICE}.image.repository" >> $GITHUB_ENV
+          echo "VERSION_PATH=${SERVICE}.image.version" >> $GITHUB_ENV
+          echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_ENV
+
+      - name: Update tag in version.yaml
+        uses: fjogeleit/yaml-update-action@master
+        with:
+          valueFile: 'deploy/helm/config/version.yaml'
+          propertyPath: ${{ env.VERSION_PATH }}
+          value: ${{ env.VERSION_NUM }}
+          repository: spaceone-dev/deploy-test
+          message: 'Update ${{ env.SERVICE }} to ${{ env.VERSION_NUM }}'
+          token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+
+      - name: Update org in version.yaml
+        uses: fjogeleit/yaml-update-action@master
+        with:
+          valueFile: 'deploy/helm/config/version.yaml'
+          propertyPath: ${{ env.ORGANIZATION }}
+          value: pyengine
+          repository: spaceone-dev/deploy-test
+          message: 'Update ${{ env.SERVICE }} organization to spaceone'
+          token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+
       - name: Slack
         if: always()
         uses: 8398a7/action-slack@v3.2.0
