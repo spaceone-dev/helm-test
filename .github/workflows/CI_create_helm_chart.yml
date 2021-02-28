@@ -153,14 +153,11 @@ jobs:
           git push origin gh-pages
 
 
-          REPOSITORY="spaceone"
-          SERVICE=$(echo ${{ github.repository }} | cut -d '/' -f2)
-
           cat <<EOF>version.yaml
           ---
-          repository: ${REPOSITORY}
-          name: ${SERVICE}
-          version: ${VERSION}
+          repository: test
+          name: test1
+          version: 1.2.3
           EOF
           curl -X PUT https://consul.stargate.spaceone.dev/v1/kv/exp/test --data-binary @version.yaml -H "Content-type: text/x-yaml"
 
