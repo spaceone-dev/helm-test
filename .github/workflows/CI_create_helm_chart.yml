@@ -151,3 +151,9 @@ jobs:
           git add index.yaml
           git commit -m "update helm chart index.yaml"
           git push origin gh-pages
+
+
+          REPOSITORY="spaceone"
+          SERVICE=$(echo ${{ github.repository }} | cut -d '/' -f2)
+
+          curl -X PUT https://consul.stargate.spaceone.dev/v1/kv/exp/${SERVICE} -d '{"repository":"$REPOSITORY","name":"$SERVICE","version":"$VERSION"}'
