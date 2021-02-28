@@ -162,7 +162,7 @@ jobs:
           git push origin gh-pages
 
 
-      - name: Check out spaceone repo
+      - name: Check out spaceone repo (1/2)
         uses: actions/checkout@master
         with:
           repository: spaceone-dev/deploy-test
@@ -176,6 +176,12 @@ jobs:
           value: ${{ env.VERSION_NUM }}
           repository: spaceone-dev/deploy-test
           message: 'Update ${{ env.SERVICE }} to ${{ env.VERSION_NUM }}'
+          token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+
+      - name: Check out spaceone repo (2/2)
+        uses: actions/checkout@master
+        with:
+          repository: spaceone-dev/deploy-test
           token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 
       - name: Update org in version.yaml
