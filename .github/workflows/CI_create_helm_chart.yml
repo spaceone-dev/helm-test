@@ -134,6 +134,7 @@ jobs:
           export VERSION=${{ env.VERSION }}
           export VERSION_NUM=$(echo ${VERSION#v})
           echo 'Update helm version in chart.yaml and values.yaml'
+          echo "ORGANIZATION=spaceone" >> $GITHUB_ENV
           echo "SERVICE=${SERVICE}" >> $GITHUB_ENV
           echo "VERSION_PATH=${SERVICE}.image.version" >> $GITHUB_ENV
           echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_ENV
@@ -165,6 +166,16 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: spaceone-dev/deploy-test
+          token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+
+      - name: Update version.yaml
+        uses: fjogeleit/yaml-update-action@master
+        with:
+          valueFile: 'deploy/helm/config/version.yaml'
+          propertyPath: ${{ env.ORGANIZATION }}
+          value: spaceone
+          repository: spaceone-dev/deploy-test
+          message: 'Update ${{ env.SERVICE }} organization to spaceone'
           token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 
       - name: Update version.yaml
