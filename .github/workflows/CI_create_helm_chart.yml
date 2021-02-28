@@ -157,3 +157,14 @@ jobs:
           export SERVICE=$(echo ${{ github.repository }} | cut -d '/' -f2)
           echo ${SERVICE}
           echo ${VERSION#v}
+
+      - name: Update Image Version in the SpaceONE deploy/helm/config/version.yaml
+        uses: fjogeleit/yaml-update-action@master
+        with:
+          valueFile: 'deploy/helm/config/version.yaml'
+          propertyPath: 'identity.image.version'
+          value: 1.2.3
+          repository: spaceone/deploy-test
+          createPR: 'true'
+          message: 'Update Image Version to 1.2.3'
+          token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
