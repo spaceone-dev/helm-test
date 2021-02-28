@@ -60,7 +60,7 @@ jobs:
           echo "VERSION_PATH=${SERVICE}.image.version" >> $GITHUB_ENV
           echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_ENV
 
-      - name: Check out spaceone repo
+      - name: Check out spaceone repo (1/2)
         uses: actions/checkout@master
         with:
           repository: spaceone-dev/deploy-test
@@ -75,6 +75,13 @@ jobs:
           repository: spaceone-dev/deploy-test
           message: 'Update ${{ env.SERVICE }} to ${{ env.VERSION_NUM }}'
           token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+
+    - name: Check out spaceone repo (2/2)
+        uses: actions/checkout@master
+        with:
+          repository: spaceone-dev/deploy-test
+          token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
+
 
       - name: Update org in version.yaml
         uses: fjogeleit/yaml-update-action@master
