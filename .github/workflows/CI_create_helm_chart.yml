@@ -128,10 +128,18 @@ jobs:
           export PATH="$cache_dir:$PATH"
 
           rm -rf .deploy
+
+          echo 'Print Version ...'
+          export SERVICE=$(echo ${{ github.repository }} | cut -d '/' -f2)
           export VERSION=${{ env.VERSION }}
+          export VERSION_NUM=$(echo ${VERSION#v})
           echo 'Update helm version in chart.yaml and values.yaml'
-          sed -i "s/latest/${VERSION#v}/g" deploy/helm/values.yaml
-          helm package deploy/helm --app-version ${VERSION#v} --version ${VERSION#v} --destination .deploy
+          echo "SERVICE=${SERVICE}" >> $GITHUB_ENV
+          echo "VERSION_PATH=${SERVICE}.image.version" >> $GITHUB_ENV
+          echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_ENV
+
+          sed -i "s/latest/${VERSION_NUM}/g" deploy/helm/values.yaml
+          helm package deploy/helm --app-version ${VERSION_NUM} --version ${VERSION_NUM} --destination .deploy
           cr upload -o spaceone-dev -r charts -p .deploy --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 
           git config --global user.email admin@spaceone.dev
@@ -149,28 +157,22 @@ jobs:
           ls
           cr index -i ./index.yaml -p ./ -o spaceone-dev -r charts -c https://spaceone-dev.github.io/charts --token ${{ secrets.SPACEONE_ADMIN_TOKEN }}
           git add index.yaml
-          git commit -m "update helm chart index.yaml"
+          git commit -m "Add helm chart ${SERVICE} - ${VERSION}"
           git push origin gh-pages
 
 
-          echo 'Print Version ...'
-          export SERVICE=$(echo ${{ github.repository }} | cut -d '/' -f2)
-          echo "SERVICE=${SERVICE}" >> $GITHUB_ENV
-          echo "VERSION_PATH=${SERVICE}.image.version" >> $GITHUB_ENV
-          echo "VERSION=$(echo ${VERSION#v})" >> $GITHUB_ENV
-
-      - name: Check out SpaceONE Top repo
+      - name: Check out spaceone repo
         uses: actions/checkout@master
         with:
           repository: spaceone-dev/deploy-test
           token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 
-      - name: Update Image Version in the SpaceONE deploy/helm/config/version.yaml
+      - name: Update version.yaml
         uses: fjogeleit/yaml-update-action@master
         with:
           valueFile: 'deploy/helm/config/version.yaml'
           propertyPath: ${{ env.VERSION_PATH }}
-          value: ${{ env.VERSION }}
+          value: ${{ env.VERSION_NUM }}
           repository: spaceone-dev/deploy-test
-          message: 'Update Image Version of ${{ env.SERVICE }} to ${{ env.VERSION }}'
+          message: 'Update ${{ env.SERVICE }} to ${{ env.VERSION_NUM }}'
           token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
