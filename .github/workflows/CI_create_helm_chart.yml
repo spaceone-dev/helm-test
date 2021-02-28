@@ -156,4 +156,4 @@ jobs:
           echo 'Print Version ...'
           export SERVICE=$(echo ${{ github.repository }} | cut -d '/' -f2)
           echo ${SERVICE}
-          echo ${VERSION}
+          echo ${VERSION#v}
