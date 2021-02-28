@@ -153,6 +153,7 @@ jobs:
           git push origin gh-pages
 
 
-          export SERVICE=echo ${{ github.repository }} | cut -d '/' -f2
+          echo 'Print Version ...'
+          export SERVICE=$(echo ${{ github.repository }} | cut -d '/' -f2)
           echo ${SERVICE}
           echo ${VERSION}
