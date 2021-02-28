@@ -76,7 +76,7 @@ jobs:
           message: 'Update ${{ env.SERVICE }} to ${{ env.VERSION_NUM }}'
           token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 
-    - name: Check out spaceone repo (2/2)
+      - name: Check out spaceone repo (2/2)
         uses: actions/checkout@master
         with:
           repository: spaceone-dev/deploy-test
