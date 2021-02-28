@@ -60,11 +60,6 @@ jobs:
           echo "VERSION_PATH=${SERVICE}.image.version" >> $GITHUB_ENV
           echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_ENV
 
-  helm:
-    if: github.repository_owner == 'spaceone-dev'
-    needs: docker
-    runs-on: ubuntu-latest
-    steps:
       - name: Check out spaceone repo
         uses: actions/checkout@master
         with:
