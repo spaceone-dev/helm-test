@@ -158,10 +158,11 @@ jobs:
           echo ${SERVICE}
           echo ${VERSION#v}
 
-          cd ~/
-          git clone git@github.com:spaceone-dev/deploy-test.git
-          cd deploy-test
-
+      - name: Check out SpaceONE Top repo
+        uses: actions/checkout@master
+        with:
+          repository: spaceone-dev/deploy-test
+          token: ${{ secrets.SPACEONE_ADMIN_TOKEN }}
 
       - name: Update Image Version in the SpaceONE deploy/helm/config/version.yaml
         uses: fjogeleit/yaml-update-action@master
